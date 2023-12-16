@@ -2,8 +2,9 @@ import sys
 
 import pygame
 
+from camera import Camera
 from sprite import Tile, Player
-from sprite import tiles_group, player_group
+from sprite import tiles_group, player_group, all_sprites
 from system import EMPTY_TILE, WALL_TILE, PLAYER_TILE, MAP_FILE
 from system import EMPTY_TILE_IMAGE, WALL_TILE_IMAGE, PLAYER_IMAGE
 from system import SCREEN, WIDTH, HEIGHT, FPS
@@ -63,6 +64,7 @@ if __name__ == '__main__':
     start_screen()
 
     player, level_x, level_y = generate_level(load_level(MAP_FILE))
+    camera = Camera()
 
     while True:
         for event in pygame.event.get():
@@ -70,6 +72,10 @@ if __name__ == '__main__':
                 terminate()
 
         SCREEN.fill((0, 0, 0))
+
+        camera.update(player)
+        for sprite in all_sprites:
+            camera.apply(sprite)
 
         tiles_group.draw(SCREEN)
         tiles_group.update()
